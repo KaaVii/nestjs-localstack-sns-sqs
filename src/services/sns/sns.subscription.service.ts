@@ -8,8 +8,8 @@ export class SnsSubscriptionService implements OnModuleInit {
   constructor(private readonly snsService: SnsService) {}
 
   async onModuleInit() {
-    const topicArn = 'arn:aws:sns:us-east-1:000000000000:my-topic';
-    const queueArn = 'arn:aws:sqs:us-east-1:000000000000:my-queue';
+    const topicArn = process.env.SNS_TOPIC_ARN;
+    const queueArn = process.env.SQS_QUEUE_ARN;
 
     try {
       const subscriptionArn = await this.snsService.subscribeToTopic(topicArn, queueArn);

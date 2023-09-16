@@ -1,14 +1,12 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { config } from 'dotenv';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { Logger } from 'nestjs-pino'; 
+import { bootstrap } from './app';
 
-async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-    );
-  await app.listen(process.env.PORT || 3000);
-}
-config();
-bootstrap();
+async function startLocal() {
+    const app = await bootstrap();
+    const logger = app.get(Logger);
+    const port = process.env.PORT || 3000;
+    await app.listen(port)
+    logger.log(`Application listening on port ${port}`);
+} 
+
+startLocal();

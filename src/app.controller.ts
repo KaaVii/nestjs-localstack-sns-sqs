@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { SnsService } from './sns/sns.service';
-import { SqsService } from './sqs/sqs.service';
+import { SnsService } from './services/sns/sns.service';
+import { SqsService } from './services/sqs/sqs.service';
 
 @Controller()
 export class AppController {
@@ -11,8 +11,8 @@ export class AppController {
     private readonly snsService: SnsService,
     ) {}
 
-  queueUrl: string = 'http://localhost:4566/000000000000/my-queue';
-  snsArn: string = 'arn:aws:sns:us-east-1:000000000000:my-topic'
+  queueUrl: string = process.env.SQS_QUEUE_URL; 
+  snsArn: string = process.env.SNS_TOPIC_ARN;
 
   @Get()
   getHello(): string {

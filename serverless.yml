@@ -1,0 +1,20 @@
+service: test-project
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  main:
+    handler: src/lambda.handler
+    events:
+      - http:
+          path: /api  
+          method: get
+custom:
+  serverless-plugin-typescript:
+    tsconfig: tsconfig.json # Ensure this points to your tsconfig.json

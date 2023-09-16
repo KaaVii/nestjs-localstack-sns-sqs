@@ -5,14 +5,12 @@ services:
     container_name: localstack_local
     ports:
       - "4566:4566" # Map Localstack's services to localhost
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
     environment:
-      - SERVICES=sns,sqs # Enable SNS and SQS services
-      - DEBUG=1 # Enable debugging for Localstack
-      - DATA_DIR=/tmp/localstack/data # Set a data directory
+      - SERVICES=sns,sqs,s3,dynamodb # Enable SNS and SQS services
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
-      - ./localstack:/tmp/localstack # Mount a volume for persistence
-    networks:
-      - localstack_network
-
-networks:
-  localstack_network:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"

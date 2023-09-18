@@ -9,8 +9,8 @@ export class SnsService {
     /* localstack sample config */
     this.sns = new AWS.SNS({
       endpoint: 'http://localhost:4566',
-      accessKeyId: 'local',
-      secretAccessKey: 'local',
+      accessKeyId: 'your-access-key-id', // Use a valid access key for LocalStack
+      secretAccessKey: 'your-secret-access-key', // Use a valid secret key for LocalStack
       region: 'us-east-1',
     });
   }

@@ -9,6 +9,7 @@ const handler = async (event, context) => {
     if (!server) {
         const app = await (0, app_1.bootstrap)();
         server = app.getHttpAdapter().getInstance();
+        console.log(server.printRoutes());
         proxy = awsLambdaFastify(server);
     }
     return proxy(event, context);

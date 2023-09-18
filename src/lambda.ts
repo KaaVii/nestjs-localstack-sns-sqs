@@ -17,6 +17,7 @@ export const handler = async (
     if (!server) {
         const app = await bootstrap();
         server = app.getHttpAdapter().getInstance() as FastifyInstance;
+        console.log(server.printRoutes());
         proxy = awsLambdaFastify(server);
     }
     return proxy(event, context);

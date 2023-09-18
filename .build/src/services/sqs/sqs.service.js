@@ -16,8 +16,8 @@ let SqsService = class SqsService {
     constructor() {
         this.sqs = new AWS.SQS({
             endpoint: 'http://localhost:4566',
-            accessKeyId: 'local',
-            secretAccessKey: 'local',
+            accessKeyId: 'your-access-key-id',
+            secretAccessKey: 'your-secret-access-key',
             region: 'us-east-1',
         });
     }

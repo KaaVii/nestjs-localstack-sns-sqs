@@ -16,8 +16,8 @@ let SnsService = class SnsService {
     constructor() {
         this.sns = new AWS.SNS({
             endpoint: 'http://localhost:4566',
-            accessKeyId: 'local',
-            secretAccessKey: 'local',
+            accessKeyId: 'your-access-key-id',
+            secretAccessKey: 'your-secret-access-key',
             region: 'us-east-1',
         });
     }

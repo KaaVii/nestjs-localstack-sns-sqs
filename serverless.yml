@@ -12,9 +12,11 @@ functions:
   main:
     handler: src/lambda.handler
     events:
-      - http:
-          path: /api  
-          method: get
+    - http:
+        method: ANY
+        path: '{proxy+}'
+
 custom:
   serverless-plugin-typescript:
     tsconfig: tsconfig.json # Ensure this points to your tsconfig.json
+  

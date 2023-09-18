@@ -34,11 +34,11 @@ $ npm run test:cov
 
 ## LocalStack + AWS Commands: 
 ``` 
-aws configure --profile localstack
+aws configure --profile localstack //If you want to use a specific profile for localstack
+aws --endpoint-url=http://localhost:4566 sns create-topic --name my-topic
 aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name my-queue
 aws --endpoint-url=http://localhost:4566 sqs send-message --queue-url http://localhost:4566/000000000000/my-queue --message-body "Hello, world!"
-aws --profile localstack --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/my-queue
-aws --endpoint-url=http://localhost:4566 sns create-topic --name my-topic
+aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/my-queue
 aws --endpoint-url=http://localhost:4566 sns list-topics
 aws --endpoint-url=http://localhost:4566 sqs list-queues
 aws --endpoint-url=http://localhost:4566 sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/my-queue --attribute-names QueueArn

@@ -6,13 +6,19 @@ services:
     container_name: localstack
     ports:
       - "4566:4566" # LocalStack services endpoint
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range 
+      - "8000:8000" # DynamoDB port
     environment:
-      - SERVICES=s3,sqs,sns,dynamodb
+      - SERVICES=s3,sqs,sns,dynamodb,lambda
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
       - LAMBDA_DOCKER_NETWORK=localstack-net
       - HOSTNAME_EXTERNAL=localstack
       - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=localstack
+      - AWS_SECRET_ACCESS_KEY=localstack
+      - LOCALSTACK_HOST=127.0.0.1 # Replace with your host machine's IP
+
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"

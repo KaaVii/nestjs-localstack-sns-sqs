@@ -13,8 +13,7 @@ export async function bootstrap(): Promise<NestFastifyApplication> {
         { bufferLogs: true }
     );
     app.useLogger(app.get(Logger));
-    // app.setGlobalPrefix('project');
+    app.setGlobalPrefix('project');
     app.useGlobalPipes(new ValidationPipe());
-    console.log('process.env', process.env);
     return app.init();
 }

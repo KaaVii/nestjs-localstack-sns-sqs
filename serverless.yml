@@ -19,4 +19,4 @@ functions:
 custom:
   serverless-plugin-typescript:
     tsconfig: tsconfig.json # Ensure this points to your tsconfig.json
-  
+    

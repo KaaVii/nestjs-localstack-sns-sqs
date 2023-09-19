@@ -7,11 +7,11 @@ import loggerConfig from './logger.config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Make the configuration service global
+      isGlobal: true,
     }),
     LoggerModule.forRootAsync(loggerConfig),
   ],
   providers: [AwsConfigService],
-  exports: [AwsConfigService], // Export the ConfigService for injection in other modules
+  exports: [AwsConfigService],
 })
 export class Settings {}

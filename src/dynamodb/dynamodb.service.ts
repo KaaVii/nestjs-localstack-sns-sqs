@@ -1,7 +1,5 @@
-// dynamodb.service.ts
-
 import { Injectable } from '@nestjs/common';
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class DynamoDbService {

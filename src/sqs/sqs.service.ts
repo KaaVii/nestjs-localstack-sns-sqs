@@ -6,12 +6,11 @@ export class SqsService {
   private sqs: AWS.SQS;
 
   constructor() {
-    /* localstack sample config */
     this.sqs = new AWS.SQS({
-      endpoint: 'http://localhost:4566',
-      accessKeyId: 'your-access-key-id', // Use a valid access key for LocalStack
-      secretAccessKey: 'your-secret-access-key', // Use a valid secret key for LocalStack
-      region: 'us-east-1',
+      endpoint: process.env.AWS_ENDPOINT_URL,
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      region: process.env.AWS_DEFAULT_REGION,
     });
   }
 

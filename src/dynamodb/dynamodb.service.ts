@@ -3,16 +3,18 @@ import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class DynamoDbService {
+
   private readonly dynamoDb: AWS.DynamoDB;
 
   constructor() {
     console.log('Initializing DynamoDB service...');
-    AWS.config.update({
+
+    this.dynamoDb = new AWS.DynamoDB({
+      endpoint: process.env.AWS_ENDPOINT_URL,
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION,
-    });
-    this.dynamoDb = new AWS.DynamoDB();
+      region: process.env.AWS_DEFAULT_REGION
+    })
   }
 
   async createItem(tableName: string, item: Record<string, any>): Promise<void> {
@@ -20,7 +22,10 @@ export class DynamoDbService {
       TableName: tableName,
       Item: AWS.DynamoDB.Converter.marshall(item),
     };
-
+    console.log('Creating item in DynamoDB...'
+      + '\nTableName: ' + tableName
+      + '\nItem: ' + JSON.stringify(item, null, 2)
+    );
     await this.dynamoDb.putItem(params).promise();
   }
 
@@ -52,5 +57,18 @@ export class DynamoDbService {
     };
 
     await this.dynamoDb.deleteItem(params).promise();
+  }
+
+  async getAllItems(tableName: string): Promise<any[]> {
+    const params: AWS.DynamoDB.ScanInput = {
+      TableName: tableName,
+    };
+    console.log('Scanning DynamoDB table ' + tableName + '...');
+    const response = await this.dynamoDb.scan(params).promise();
+    if (response.Items && response.Items.length > 0) {
+      return response.Items.map((item) => AWS.DynamoDB.Converter.unmarshall(item));
+    } else {
+      return [];
+    }
   }
 }

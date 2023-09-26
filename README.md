@@ -44,9 +44,31 @@ awslocal --endpoint-url=http://localhost:4566 sqs create-queue --queue-name my-q
 S3
 awslocal --endpoint-url=http://localhost:4566 s3 mb s3://my-bucket
 
-DynamoDB
+DynamoDB:
+awslocal dynamodb create-table \
+    --table-name my-table \
+    --key-schema AttributeName=id,KeyType=HASH \
+    --attribute-definitions AttributeName=id,AttributeType=S \
+    --billing-mode PAY_PER_REQUEST \
+    --region us-east-1
 
 Subscriptions:
+awslocal --endpoint-url=http://localhost:4566 s3api put-bucket-notification-configuration --bucket my-bucket --notification-configuration '
+{
+  "TopicConfigurations": [
+    {
+      "Id": "MyTopicNotification",
+      "TopicArn": "arn:aws:sns:us-east-1:000000000000:my-topic",
+      "Events": ["s3:ObjectCreated:*"]
+    }
+  ]
+}
+'
+
+aws lambda create-event-source-mapping \
+  --function-name your-lambda-function-name \
+  --event-source-arn arn:aws:sns:us-east-1:123456789012:my-topic
+
 
 Test:
 awslocal --endpoint-url=http://localhost:4566 sns list-topics
@@ -54,6 +76,10 @@ awslocal --endpoint-url=http://localhost:4566 sqs list-queues
 awslocal --endpoint-url=http://localhost:4566 sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/my-queue --attribute-names QueueArn
 ```
 
+Lambda running locally:
+serverless plugin install -n serverless-localstack
+serverless plugin install -n serverless-dotenv-plugin
+serverless deploy -c serverless.dev.yml
 
 ## Environment Variables
 
@@ -89,6 +115,9 @@ awslocal s3api put-bucket-notification-configuration --bucket my-bucket --notifi
 awslocal sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic   --protocol http --notification-endpoint http://localhost:3000/sns/webhook --endpoint-url http://localhost:4566
 ```
 ## Support
+
+[LocalStack Init Hooks](https://docs.localstack.cloud/references/init-hooks/)
+sudo chmod +x deploy/scripts/init-aws.sh
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 

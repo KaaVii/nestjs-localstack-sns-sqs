@@ -3,20 +3,32 @@ service: test-project
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
+  - serverless-localstack  # Include the serverless-localstack plugin
 
 provider:
   name: aws
   runtime: nodejs18.x
+  stage: dev
+  profile: localstack # Use the AWS profile for LocalStack
+  region: us-east-1 # Adjust the region as needed
+  endpoint: http://localhost:4566  # Point to your LocalStack instance
 
 functions:
   main:
     handler: src/lambda.handler
     events:
-    - http:
-        method: ANY
-        path: '{proxy+}'
+      - http:
+          method: ANY
+          path: '{proxy+}'  
 
 custom:
   serverless-plugin-typescript:
     tsconfig: tsconfig.json # Ensure this points to your tsconfig.json
-    
+
+  # Configuration for serverless-localstack plugin
+  localstack:
+    stages:
+      - dev  # Enable the plugin for the "dev" stage
+    host: http://localhost  # Specify the LocalStack host
+    edgePort: 4566  # Specify the LocalStack edge port
+    autostart: true  # Automatically start LocalStack in Docker on Serverless deploy

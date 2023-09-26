@@ -23,7 +23,7 @@ export class DynamoDbController {
     @Param('id') id: string,
   ): Promise<any> {
     try {
-      const key = { ID: id }; // Replace 'ID' with your actual key attribute name
+      const key = { ID: id };
       const item = await this.dynamoDbService.getItem(tableName, key);
       if (!item) {
         throw new NotFoundException('Item not found in DynamoDB.');
@@ -41,7 +41,7 @@ export class DynamoDbController {
     @Body() updateData: Record<string, any>,
   ): Promise<void> {
     try {
-      const key = { ID: id }; // Replace 'ID' with your actual key attribute name
+      const key = { ID: id };
       const updateExpression = 'SET ' + Object.keys(updateData).map(key => `#${key} = :${key}`).join(', ');
       const expressionAttributeValues = Object.entries(updateData).reduce((acc, [key, value]) => {
         acc[`:${key}`] = value;
@@ -63,6 +63,20 @@ export class DynamoDbController {
       await this.dynamoDbService.deleteItem(tableName, key);
     } catch (error) {
       throw new BadRequestException('Failed to delete item from DynamoDB.');
+    }
+  }
+
+  @Get(':tableName')  
+  async getAllItems(@Param('tableName') tableName: string): Promise<any[]> {
+    try {
+      const items = await this.dynamoDbService.getAllItems(tableName);
+      if (!items || items.length === 0) {
+        throw new NotFoundException('No items found in DynamoDB.');
+      }
+      return items;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('Failed to retrieve items from DynamoDB.');
     }
   }
 }

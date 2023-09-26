@@ -8,10 +8,10 @@ export class SnsService {
   constructor() {
     /* localstack sample config */
     this.sns = new AWS.SNS({
-      endpoint: 'http://localhost:4566',
+      endpoint: process.env.AWS_ENDPOINT_URL, // Use a valid endpoint for LocalStack
       accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Use a valid access key for LocalStack  
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Use a valid secret key for LocalStack
-      region: 'us-east-1',
+      region: process.env.AWS_DEFAULT_REGION,
     });
   }
 
@@ -39,7 +39,7 @@ export class SnsService {
 
     try {
       const subscribeResponse = await this.sns.subscribe(params).promise();
-      return subscribeResponse.SubscriptionArn;
+      return subscribeResponse.SubscriptionArn; 
     } catch (error) {
       console.error('Error subscribing to SNS topic:', error);
       throw error;

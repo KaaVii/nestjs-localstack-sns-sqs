@@ -1,0 +1,29 @@
+service: test-project
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-localstack
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  profile: localstack # Use the AWS profile for LocalStack
+  region: us-east-1 # Adjust the region as needed
+
+functions:
+  main:
+    handler: src/lambda.handler
+    events:
+    - http:
+        method: ANY
+        path: '{proxy+}'
+    environment:
+      LAMBDA_EXECUTOR: docker
+
+custom:
+  serverless-plugin-typescript:
+    tsconfig: tsconfig.json # Ensure this points to your tsconfig.json
+    

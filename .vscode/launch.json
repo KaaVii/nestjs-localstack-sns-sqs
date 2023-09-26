@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "NestJS Debug",
+        "program": "${workspaceFolder}/node_modules/.bin/nest",
+        "args": ["start", "--watch", "--debug", "--exec", "ts-node", "src/main.ts"],
+        "runtimeArgs": ["-r", "tsconfig-paths/register"],
+        "restart": true,
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "sourceMaps": true,
+        "env": {
+          "NODE_ENV": "development"
+        },
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+      }
+    ]
+  }
+  

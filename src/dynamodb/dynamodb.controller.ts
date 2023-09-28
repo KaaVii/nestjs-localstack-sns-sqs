@@ -79,4 +79,33 @@ export class DynamoDbController {
       throw new BadRequestException('Failed to retrieve items from DynamoDB.');
     }
   }
+
+  //createa  get controller to consume the service from the dynamodbservice that list the tables in dynamodb
+  @Get('listTables')
+  async listTables(): Promise<any> {
+    try {
+      const tables = await this.dynamoDbService.listTables();
+      if (!tables) {
+        throw new NotFoundException('No tables found in DynamoDB.');
+      }
+      return tables;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('Failed to retrieve tables from DynamoDB.');
+    }
+  }
+
+  @Get('describeTable/:tableName')
+  async describeTable(@Param('tableName') tableName: string): Promise<any> {
+    try {
+      const table = await this.dynamoDbService.describeTable(tableName);
+      if (!table) {
+        throw new NotFoundException('No table found in DynamoDB.');
+      }
+      return table;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('Failed to retrieve table from DynamoDB.');
+    }
+  }
 }

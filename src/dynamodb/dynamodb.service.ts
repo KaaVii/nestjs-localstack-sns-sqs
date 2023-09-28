@@ -15,6 +15,11 @@ export class DynamoDbService {
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
       region: process.env.AWS_DEFAULT_REGION
     })
+    console.log('DynamoDB service initialized.')
+    console.log('AWS_ENDPOINT_URL: ' + process.env.AWS_ENDPOINT_URL);
+    console.log('AWS_ACCESS_KEY_ID: ' + process.env.AWS_ACCESS_KEY_ID);
+    console.log('AWS_SECRET_ACCESS_KEY: ' + process.env.AWS_SECRET_ACCESS_KEY);
+    console.log('AWS_DEFAULT_REGION: ' + process.env.AWS_DEFAULT_REGION);
   }
 
   async createItem(tableName: string, item: Record<string, any>): Promise<void> {
@@ -26,6 +31,7 @@ export class DynamoDbService {
       + '\nTableName: ' + tableName
       + '\nItem: ' + JSON.stringify(item, null, 2)
     );
+    console.log('params: ' + JSON.stringify(params, null, 2));
     await this.dynamoDb.putItem(params).promise();
   }
 
@@ -70,5 +76,20 @@ export class DynamoDbService {
     } else {
       return [];
     }
+  }
+
+
+  async describeTable(tableName: string): Promise<any> {
+    const params: AWS.DynamoDB.DescribeTableInput = {
+      TableName: tableName,
+    };
+    console.log('Describing DynamoDB table ' + tableName + '...');
+    const response = await this.dynamoDb.describeTable(params).promise();
+    return response;
+  }
+
+  async listTables(): Promise<any> {
+    const response = await this.dynamoDb.listTables().promise();
+    return response;
   }
 }

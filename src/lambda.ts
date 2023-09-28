@@ -20,6 +20,7 @@ export const handler = async (
     server = app.getHttpAdapter()?.getInstance() as FastifyInstance;
     proxy = awsLambdaFastify(server);
   }
+  console.log(server.printRoutes());
 
   // Check if the event is an SNS event
   if (event?.Records?.[0]?.Sns) {
@@ -31,13 +32,11 @@ export const handler = async (
     const dynamoDBService = new DynamoDbService();
 
     // Define your DynamoDB table name
-    const tableName = 'YourDynamoDBTableName';
+    const tableName = 'my-table';
 
     // Store the SNS message data in DynamoDB
     try {
       await dynamoDBService.createItem(tableName, snsMessage);
-
-      console.log('Stored SNS message in DynamoDB successfully.');
 
       // Implement any additional logic or return responses here
     } catch (error) {

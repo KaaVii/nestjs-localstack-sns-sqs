@@ -27,13 +27,10 @@ export class DynamoDbService {
       TableName: tableName,
       Item: AWS.DynamoDB.Converter.marshall(item),
     };
-    console.log('Creating item in DynamoDB...'
-      + '\nTableName: ' + tableName
-      + '\nItem: ' + JSON.stringify(item, null, 2)
-    );
-    console.log('params: ' + JSON.stringify(params, null, 2));
+    console.log('Creating item in DynamoDB...')
     await this.dynamoDb.putItem(params).promise();
-  }
+  };
+  
 
   async getItem(tableName: string, key: Record<string, any>): Promise<any | null> {
     const params: AWS.DynamoDB.GetItemInput = {

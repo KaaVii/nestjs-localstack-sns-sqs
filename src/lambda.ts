@@ -36,7 +36,18 @@ export const handler = async (
 
     // Store the SNS message data in DynamoDB
     try {
-      await dynamoDBService.createItem(tableName, snsMessage);
+      // Get the current epoch time in milliseconds
+      const epochTimeInMilliseconds = new Date().getTime();
+
+      // Convert the epoch time to a string
+      const epochTimeAsString = epochTimeInMilliseconds.toString();
+
+      console.log(`Epoch Time as String: ${epochTimeAsString}`);
+      const itemToStore = {
+        "id": epochTimeAsString,
+        "message": snsMessage
+      };
+      await dynamoDBService.createItem(tableName, itemToStore);
 
       // Implement any additional logic or return responses here
     } catch (error) {

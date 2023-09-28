@@ -16,7 +16,7 @@ export class DynamoDbService {
       region: process.env.AWS_DEFAULT_REGION
     })
     console.log('DynamoDB service initialized.')
-    console.log('AWS_ENDPOINT_URL: ' + process.env.AWS_ENDPOINT_URL);
+    console.log('AWS_ENDPOINT_URL: ' + process.env.AWS_ENDPOINT);
     console.log('AWS_ACCESS_KEY_ID: ' + process.env.AWS_ACCESS_KEY_ID);
     console.log('AWS_SECRET_ACCESS_KEY: ' + process.env.AWS_SECRET_ACCESS_KEY);
     console.log('AWS_DEFAULT_REGION: ' + process.env.AWS_DEFAULT_REGION);

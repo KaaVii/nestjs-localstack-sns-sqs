@@ -13,7 +13,7 @@ export class S3Service {
     });
 
     this.s3 = new AWS.S3({
-      endpoint: process.env.AWS_S3_ENDPOINT, // Replace with your S3 endpoint URL
+      endpoint: process.env.AWS_ENDPOINT, // Replace with your S3 endpoint URL
     });
   }
 

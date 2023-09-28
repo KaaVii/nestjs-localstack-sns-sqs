@@ -8,7 +8,7 @@ export class SnsService {
   constructor() {
     /* localstack sample config */
     this.sns = new AWS.SNS({
-      endpoint: process.env.AWS_ENDPOINT_URL, // Use a valid endpoint for LocalStack
+      endpoint: process.env.AWS_ENDPOINT, // Use a valid endpoint for LocalStack
       accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Use a valid access key for LocalStack  
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Use a valid secret key for LocalStack
       region: process.env.AWS_DEFAULT_REGION,

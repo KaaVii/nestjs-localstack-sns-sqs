@@ -70,6 +70,12 @@ aws lambda create-event-source-mapping \
   --event-source-arn arn:aws:sns:us-east-1:123456789012:my-topic
 
 
+aws --endpoint-url=http://localhost:4566 lambda create-event-source-mapping \
+  --function-name test-project-dev-main \
+  --event-source-arn arn:aws:sqs:us-east-1:000000000000:my-queue \
+  --batch-size 10 \
+  --starting-position LATEST
+
 Test:
 awslocal --endpoint-url=http://localhost:4566 sns list-topics
 awslocal --endpoint-url=http://localhost:4566 sqs list-queues

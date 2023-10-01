@@ -67,6 +67,23 @@ else
     exit 1
 fi
 
+# Set up S3 bucket notification configuration to send events to SQS queue
+if awslocal --endpoint-url=http://localhost:4566 s3api put-bucket-notification-configuration --bucket my-bucket --notification-configuration '
+{
+  "QueueConfigurations": [
+    {
+      "Id": "MyQueueNotification",
+      "QueueArn": "arn:aws:sqs:us-east-1:000000000000:my-queue",
+      "Events": ["s3:ObjectCreated:*"]
+    }
+  ]
+}
+'; then
+    echo "S3 bucket notification configuration updated successfully."
+else
+    echo "Error updating S3 bucket notification configuration."
+    exit 1
+fi
 
 # Print a message indicating that the resources have been created
 echo "LocalStack resources created successfully."

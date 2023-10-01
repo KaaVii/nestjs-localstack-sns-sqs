@@ -22,39 +22,34 @@ export const handler = async (
   }
   console.log(server.printRoutes());
 
-  // Check if the event is an SNS event
-  if (event?.Records?.[0]?.Sns) {
-    const snsMessage = JSON.parse(event.Records[0].Sns.Message);
-    // Handle the SNS message
-    console.log('Received SNS message:', snsMessage);
-
-    // Inject DynamoDBService
+  // Process SQS messages
+  if (event.Records) {
     const dynamoDBService = new DynamoDbService();
-
-    // Define your DynamoDB table name
     const tableName = 'my-table';
 
-    // Store the SNS message data in DynamoDB
-    try {
-      // Get the current epoch time in milliseconds
-      const epochTimeInMilliseconds = new Date().getTime();
+    for (const record of event.Records) {
+      const sqsMessage = JSON.parse(record.body); // Parse SQS message body
 
-      // Convert the epoch time to a string
-      const epochTimeAsString = epochTimeInMilliseconds.toString();
+      // Handle the SQS message
+      console.log('Received SQS message:', sqsMessage);
 
-      console.log(`Epoch Time as String: ${epochTimeAsString}`);
-      const itemToStore = {
-        "id": epochTimeAsString,
-        "message": snsMessage
-      };
-      await dynamoDBService.createItem(tableName, itemToStore);
+      try {
+        const epochTimeInMilliseconds = new Date().getTime();
+        const epochTimeAsString = epochTimeInMilliseconds.toString();
 
-      // Implement any additional logic or return responses here
-    } catch (error) {
-      console.error('Error storing SNS message in DynamoDB:', error);
-      // Handle the error and return appropriate responses if needed
+        console.log(`Epoch Time as String: ${epochTimeAsString}`);
+        const itemToStore = {
+          id: epochTimeAsString,
+          message: sqsMessage,
+        };
+        await dynamoDBService.createItem(tableName, itemToStore);
+
+        // Implement any additional logic or return responses here
+      } catch (error) {
+        console.error('Error storing SQS message in DynamoDB:', error);
+        // Handle the error and return appropriate responses if needed
+      }
     }
   }
-
   return proxy(event, context);
 };
